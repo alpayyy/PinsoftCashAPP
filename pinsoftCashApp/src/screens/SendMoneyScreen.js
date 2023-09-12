@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import ErrorScreen from "./ErrorScreen"; // ErrorScreen bileşenini içe aktarın
+import ErrorScreen from "./ErrorScreen"; 
+
+
+import QRCode from "react-native-qrcode-svg";
 
 const SendMoneyScreen = ({ navigation }) => {
   const [sentBalance, setSentBalance] = useState("");
-  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); // İşlem başarısız olduğunda false olarak ayarlayın
+  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); 
+  const [qrData, setQRData] = useState(""); 
 
   const handleSubmit = () => {
-    // Para gönderme işlemini burada gerçekleştirin
-    // İşlem başarısızsa setIsTransactionSuccessful(false) olarak ayarlayın
-    // Ayrıca, işlem başarısız olduğunda ErrorScreen'e yönlendirin
+    
     setIsTransactionSuccessful(false);
-    navigation.navigate("HataEkranı"); // ErrorScreen'e yönlendirin
+    navigation.navigate("ErrorScreen"); 
   };
 
   const handleQRCreate = () => {
-    // QR Oluştur düğmesine basıldığında yapılacak işlemleri burada gerçekleştirin
-    console.log("QR Kodu Oluşturuldu");
+    // QR kodunun içeriğini sentBalance değeri 
+    setQRData(sentBalance);
   };
 
   return (
@@ -31,8 +33,16 @@ const SendMoneyScreen = ({ navigation }) => {
         onChangeText={(enteredValue) => setSentBalance(enteredValue)}
       />
       <Button title="Gönder" onPress={handleSubmit} />
-      <Button title="QR Oluştur" onPress={handleQRCreate} /> {/* QR Oluştur düğmesi */}
-      
+      <Button title="QR Oluştur" onPress={handleQRCreate} />
+
+      {/* QR kodunu sadece bir şartla görüntüleyin */}
+      {qrData ? (
+        <QRCode
+          value={qrData} // QR kodunun içeriği
+          size={200} 
+        />
+      ) : null}
+
       {isTransactionSuccessful === false && <ErrorScreen navigation={navigation} />}
     </View>
   );
