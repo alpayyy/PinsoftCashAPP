@@ -1,49 +1,51 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import ErrorScreen from "./ErrorScreen"; 
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
+const QRScannerScreen = ({ navigation }) => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
-import QRCode from "react-native-qrcode-svg";
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
 
-const SendMoneyScreen = ({ navigation }) => {
-  const [sentBalance, setSentBalance] = useState("");
-  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); 
-  const [qrData, setQRData] = useState(""); 
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    // data, taranan QR kodun içeriğini içerir
+    alert(`QR Kod Okundu: ${data}`);
 
-  const handleSubmit = () => {
-    
-    setIsTransactionSuccessful(false);
-    navigation.navigate("ErrorScreen"); 
+    // İşlem başarılı mı kontrol etmek için örnek bir koşul ekleyin
+    if (data === "başarılı_kod") {
+      navigation.navigate("TransactionStatusScreen");
+    } else {
+      navigation.navigate("ErrorScreen");
+    }
   };
 
-  const handleQRCreate = () => {
-    // QR kodunun içeriğini sentBalance değeri 
-    setQRData(sentBalance);
-  };
+  if (hasPermission === null) {
+    return <Text>İzinler bekleniyor...</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>Kamera izni yok</Text>;
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Para Gönderme Ekranı</Text>
-      <TextInput
-        style={styles.input}
-        name="sent balance"
-        placeholder="Gönderilecek Tutar"
-        value={sentBalance}
-        onChangeText={(enteredValue) => setSentBalance(enteredValue)}
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
       />
-      <Button title="Gönder" onPress={handleSubmit} />
-      <Button title="QR Oluştur" onPress={handleQRCreate} />
 
-      {/* QR kodunu sadece bir şartla görüntüleyin */}
-      {qrData ? (
-        <QRCode
-          value={qrData} // QR kodunun içeriği
-          size={200} 
+      {scanned && (
+        <Button
+          title={"Tekrar Tara"}
+          onPress={() => setScanned(false)}
         />
-      ) : null}
-
-      {isTransactionSuccessful === false && <ErrorScreen navigation={navigation} />}
+      )}
     </View>
   );
 };
@@ -54,18 +56,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  heading: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  input: {
-    width: 200,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
-  },
 });
 
-export default SendMoneyScreen;
+export default QRScannerScreen;

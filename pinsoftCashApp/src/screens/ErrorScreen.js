@@ -1,14 +1,15 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const ErrorScreen = ({ navigation }) => {
+const ErrorScreen = () => {
+  const navigation = useNavigation();
+
   const handleRetry = () => {
     navigation.navigate("SendMoneyScreen"); 
-    
   };
 
   const handleGoBack = () => {
-    
     navigation.navigate("HomePage"); 
   };
 
