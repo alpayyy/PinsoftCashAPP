@@ -27,7 +27,7 @@ const QRScannerScreen = ({ navigation }) => {
   };
 
   if (hasPermission === null) {
-    return <Text>İzinler bekleniyor...</Text>;
+    return <Text>İzinler bekleniyor....</Text>;
   }
   if (hasPermission === false) {
     return <Text>Kamera izni yok</Text>;

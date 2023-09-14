@@ -38,7 +38,7 @@ const TransactionSuccessScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>İşlem Başarılı</Text>
-      <Text style={styles.successText}>İşlem başarıyla tamamlandı.</Text>
+      <Text style={styles.successText}>İşlem başarıyla tamamlandı..</Text>
       <Text style={styles.icon}>✅</Text>
       <View style={styles.transactionDetails}>
         <Text style={styles.detailText}>
