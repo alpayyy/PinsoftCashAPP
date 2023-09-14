@@ -16,7 +16,7 @@ const TransactionFailureScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>İşlem Başarısız</Text>
-      <Text style={styles.failureText}>İşlem başarısız oldu.</Text>
+      <Text style={styles.failureText}>İşlem başarısız oldu..</Text>
       <Text style={styles.icon}>❌</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleRetry}>

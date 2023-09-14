@@ -29,7 +29,7 @@ const QRScannerScreen = () => {
         style={StyleSheet.absoluteFillObject}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
       />
-      <Text style={styles.description}>QR kodu Tara</Text>
+      <Text style={styles.description}>QR Kodu Tara</Text>
     </View>
   );
 };
