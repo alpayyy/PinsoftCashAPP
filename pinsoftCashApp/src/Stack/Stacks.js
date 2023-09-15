@@ -14,7 +14,7 @@ import {
   Alert,
 } from 'react-native';
 import SendMoneyScreen from '../screens/SendMoneyScreen';
-import LoginScreen from '../screens/loginScreen';
+import LoginScreen from '../screens/LoginScreen';
 
 
 const Stacks = () => {
